@@ -1,0 +1,34 @@
+import { useState } from "react";
+
+
+const Header = ({ title, onMenuClick }) => {
+  return (
+    <header className="app-header">
+      <div className="header-left">
+        <button className="menu-toggle" onClick={onMenuClick}>
+          ☰
+        </button>
+        <h1 className="header-title">{title}</h1>
+      </div>
+
+      <div className="header-right">
+        <div className="notification-bell">
+          🔔
+          <span className="notification-badge">2</span>
+        </div>
+
+        <div className="user-profile">
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="John Doe"
+            className="user-avatar"
+          />
+          <span className="user-name">John Doe</span>
+          <span className="dropdown-caret">▾</span>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;

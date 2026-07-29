@@ -1,0 +1,39 @@
+.sidebar {
+  width: 260px;              /* fixed width, e.g. 260px */
+  min-height: 100%;         /* full screen height */
+  background-color: darkblue;   /* dark navy */
+  color: white;               /* text color for contrast */
+  display: flex;             /* so footer can stick to bottom */
+  flex-direction: column;
+  padding: 20px;
+}
+
+.hero-heading-img {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dashbord, .add-application, .all-applications, .api-job {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;         /* important — makes it feel clickable */
+}
+
+.sidebar-footer {
+  margin-top: ___;      /* pushes footer to bottom, uses "auto" */
+  background-color: ___;
+  border-radius: ___;
+  padding: ___;
+  text-align: ___;
+}
