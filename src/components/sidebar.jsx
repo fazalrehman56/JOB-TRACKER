@@ -5,7 +5,9 @@ import jobIcon from "../icons/noun-job-7832834.png";
 import worldIcon from "../icons/noun-world-7783964.png";
 
 import { NavLink } from "react-router-dom";
-const Sidebar = () => {
+const Sidebar = ({ setTittle }) => {
+    
+
     return (
         <div className="sidebar" >
             <div className="hero-heading-img">
@@ -20,23 +22,23 @@ const Sidebar = () => {
                 <div className="dashbord">
                     <img src={dashboardIcon} alt="Dashbord" className="dashbord-img" />
                     
-                    <NavLink to="/dashboard" >DASHBORD</NavLink>
+                    <NavLink onClick={() => setTittle("DASHBORD")} to="/dashboard" >DASHBORD</NavLink>
 
                 </div>
                 <div className="add-application">
                     <img src={addIcon} alt="Add Application" className="add-application-img" />
                     
-                    <NavLink to="/add-application" >ADD APPLICATION</NavLink>
+                    <NavLink onClick={() => setTittle("ADD APPLICATION")} to="/add-application" >ADD APPLICATION</NavLink>
                 </div>
                 <div className="all-applications">
                     <img src={clipboardIcon} alt="All Applications" className="all-applications-img" />
                    
-                    <NavLink to="/all-applications" >ALL APPLICATIONS</NavLink>
+                    <NavLink onClick={() => setTittle("ALL APPLICATIONS")} to="/all-applications" >ALL APPLICATIONS</NavLink>
                 </div>
                 <div className="api-job">
                     <img src={worldIcon} alt="API JOB" className="api-job-img" />
                     
-                    <NavLink to="/api-job" >API JOB</NavLink>
+                    <NavLink onClick={() => setTittle("API JOB")} to="/api-job" >API JOB</NavLink>
                 </div>
 
             </nav>
