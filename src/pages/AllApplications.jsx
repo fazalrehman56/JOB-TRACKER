@@ -1,14 +1,13 @@
 
+import { useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const applications = [
-  { id: 1, initials: "SL", color: "#0ea5e9", company: "Systems Limited", role: "Frontend Developer Intern", status: "Applied", source: "LinkedIn", date: "May 20, 2024" },
-  { id: 2, initials: "1C", color: "#111827", company: "10Pearls", role: "React Developer", status: "In Interview", source: "LinkedIn", date: "May 15, 2024" },
-  { id: 3, initials: "f3", color: "#dc2626", company: "Folio3", role: "Web Developer", status: "Rejected", source: "Indeed", date: "May 10, 2024" },
-  { id: 4, initials: "DN", color: "#16a34a", company: "DevNest", role: "Frontend Developer", status: "Applied", source: "Company Website", date: "May 8, 2024" },
-  { id: 5, initials: "CP", color: "#7c3aed", company: "CodePixel", role: "JavaScript Developer", status: "In Interview", source: "LinkedIn", date: "May 5, 2024" },
-];
+
 
 const AllApplications = () => {
+  const navigate = useNavigate();
+  const { applications , editApplication, editingApplication, setEditingApplication } = useOutletContext(); // Access the applications array and addApplication function from context;
+
   return (
     <div className="all-apps-page">
       {/* Header */}
@@ -68,7 +67,7 @@ const AllApplications = () => {
                     <div className="company-logo" style={{ backgroundColor: app.color }}>
                       {app.initials}
                     </div>
-                    <span>{app.company}</span>
+                    <span>{app.companyName}</span>
                   </div>
                 </td>
                 <td>{app.role}</td>
@@ -81,7 +80,11 @@ const AllApplications = () => {
                 <td>{app.date}</td>
                 <td>
                   <div className="actions-cell">
-                    <button className="icon-btn edit">✏️</button>
+                    <button onClick={()=>{
+                      setEditingApplication(app)
+                      console.log("Editing application:", app);
+                      navigate("/add-application")
+                    }} className="icon-btn edit">✏️</button>
                     <button className="icon-btn delete">🗑️</button>
                   </div>
                 </td>
