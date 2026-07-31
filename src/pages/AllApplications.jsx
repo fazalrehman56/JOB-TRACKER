@@ -1,13 +1,19 @@
 
 import { useOutletContext } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 
 
 const AllApplications = () => {
   const navigate = useNavigate();
-  const { currentPage,totalPages,currentApplications,applications , editApplication, editingApplication, setEditingApplication ,deleteApplication } = useOutletContext(); // Access the applications array and addApplication function from context;
-
+  const {  applications, editApplication, editingApplication, setEditingApplication, deleteApplication } = useOutletContext(); // Access the applications array and addApplication function from context;
+    const [currentPage, setCurrentPage] = useState(1);
+  const itemperPage = 5; // Number of applications per page
+  const startIndex = (currentPage - 1) * itemperPage;
+  const endIndex = startIndex + itemperPage;
+  const currentApplications = applications.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(applications.length / itemperPage);
   return (
     <div className="all-apps-page">
       {/* Header */}
@@ -80,12 +86,12 @@ const AllApplications = () => {
                 <td>{app.date}</td>
                 <td>
                   <div className="actions-cell">
-                    <button onClick={()=>{
+                    <button onClick={() => {
                       setEditingApplication(app)
                       console.log("Editing application:", app);
                       navigate("/add-application")
                     }} className="icon-btn edit">✏️</button>
-                    <button onClick={()=>{
+                    <button onClick={() => {
                       deleteApplication(app.id);
                     }} className="icon-btn delete">🗑️</button>
                   </div>
@@ -97,19 +103,33 @@ const AllApplications = () => {
 
         {/* Footer / Pagination */}
         <div className="table-footer">
-          <span>Showing 1 to 5 of 24 applications</span>
+          <span>
+  Showing {startIndex + 1} to {Math.min(endIndex, applications.length)} of {applications.length} applications
+</span>
           <div className="pagination">
-            {Array.from({length: totalPages},(_, index) => index + 1).map((pageNum) => (
+            <button
+              className="page-btn"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            >
+              ‹
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNum) => (
               <button key={pageNum}
-               className={`page-btn ${currentPage === pageNum ? "active" : ""}`}
+                className={`page-btn ${currentPage === pageNum ? "active" : ""}`}
                 onClick={() => setCurrentPage(pageNum)}
-               >{pageNum}</button>
+              >{pageNum}</button>
             ))}
+            <button
+              className="page-btn"
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            >
+              ›
+            </button>
           </div>
         </div>
       </div>
-          </div>
-        
+    </div>
+
   );
 };
 
