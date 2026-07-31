@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const AllApplications = () => {
   const navigate = useNavigate();
-  const { applications , editApplication, editingApplication, setEditingApplication } = useOutletContext(); // Access the applications array and addApplication function from context;
+  const { currentPage,totalPages,currentApplications,applications , editApplication, editingApplication, setEditingApplication ,deleteApplication } = useOutletContext(); // Access the applications array and addApplication function from context;
 
   return (
     <div className="all-apps-page">
@@ -60,7 +60,7 @@ const AllApplications = () => {
             </tr>
           </thead>
           <tbody>
-            {applications.map((app) => (
+            {currentApplications.map((app) => (
               <tr key={app.id}>
                 <td>
                   <div className="company-cell">
@@ -85,7 +85,9 @@ const AllApplications = () => {
                       console.log("Editing application:", app);
                       navigate("/add-application")
                     }} className="icon-btn edit">✏️</button>
-                    <button className="icon-btn delete">🗑️</button>
+                    <button onClick={()=>{
+                      deleteApplication(app.id);
+                    }} className="icon-btn delete">🗑️</button>
                   </div>
                 </td>
               </tr>
@@ -97,17 +99,17 @@ const AllApplications = () => {
         <div className="table-footer">
           <span>Showing 1 to 5 of 24 applications</span>
           <div className="pagination">
-            <button className="page-btn">‹</button>
-            <button className="page-btn active">1</button>
-            <button className="page-btn">2</button>
-            <button className="page-btn">3</button>
-            <button className="page-btn">4</button>
-            <button className="page-btn">5</button>
-            <button className="page-btn">›</button>
+            {Array.from({length: totalPages},(_, index) => index + 1).map((pageNum) => (
+              <button key={pageNum}
+               className={`page-btn ${currentPage === pageNum ? "active" : ""}`}
+                onClick={() => setCurrentPage(pageNum)}
+               >{pageNum}</button>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+          </div>
+        
   );
 };
 
