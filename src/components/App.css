@@ -248,9 +248,21 @@ padding-bottom: 20px;
 }
 
 .main-content {
-  flex: 1;                /* takes up all remaining horizontal space */
+  .main-content {
+  flex: 1;
   display: flex;
-  flex-direction: column; /* header on top, page content stacks below it */
+  flex-direction: column;
+  height: 100vh;      
+    scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* old Edge/IE */
+}}
+.main-content::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari, Edge */
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
 }
 /* ADD APPLICATIONS  */
 
@@ -684,6 +696,9 @@ tbody tr:hover {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-bottom: 24px;
+      height: 50vh;
+    overflow-y: auto;
+    padding-right: 8px;
 }
 
 /* Job card */
@@ -864,4 +879,28 @@ tbody tr:hover {
   border-radius: 6px;
   padding: 6px 10px;
   font-size: 13px;
+}
+.jobs-grid {
+  max-height: 50vh;    /* adjust based on how many rows you want visible */
+  overflow-y: auto;
+  padding-right: 8px;      /* prevents scrollbar from overlapping card content */
+}
+
+/* Optional: style the scrollbar itself (Chrome/Edge/Safari) */
+.jobs-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.jobs-grid::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+.jobs-grid::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+.jobs-grid::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

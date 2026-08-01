@@ -44,7 +44,7 @@ const filteredApplications = applications.filter((app)=>{
           <h1>All Applications</h1>
           <p>Here is a list of all your job applications.</p>
         </div>
-        <button className="btn-add-application">+ Add Application</button>
+        <button onClick={() => navigate("/add-application")} className="btn-add-application">+ Add Application</button>
       </div>
 
       {/* Filter bar */}
