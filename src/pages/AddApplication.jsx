@@ -78,8 +78,8 @@ const AddApplication = () => {
             <label htmlFor="status">Status</label>
             <select name="status" value={formData.status} onChange={handleChange} id="status">
               <option value="">Select status</option>
-              <option value="pending">Pending</option>
-              <option value="interview">Interview</option>
+              <option value="pending">Applied</option>
+              <option value="interview">In Interview</option>
               <option value="offer">Offer</option>
               <option value="rejected">Rejected</option>
             </select>

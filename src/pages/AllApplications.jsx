@@ -1,19 +1,41 @@
 
 import { useOutletContext } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { use, useState } from "react";
+import { useEffect } from "react";
 
 
 
 const AllApplications = () => {
   const navigate = useNavigate();
-  const {  applications, editApplication, editingApplication, setEditingApplication, deleteApplication } = useOutletContext(); // Access the applications array and addApplication function from context;
-    const [currentPage, setCurrentPage] = useState(1);
+  const { applications, editApplication, editingApplication, setEditingApplication, deleteApplication } = useOutletContext(); // Access the applications array and addApplication function from context;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+const [statusFilter, setStatusFilter] = useState("All Status");
+const [sourceFilter, setSourceFilter] = useState("All Sources");
+const [sortBy, setSortBy] = useState("Newest");
+const filteredApplications = applications.filter((app)=>{
+    const matchesSearch = app.companyName.toLowerCase().includes(searchTerm.toLowerCase()) || app.role.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "All Status" || app.status.toLowerCase() === statusFilter.toLowerCase();
+    const matchesSource = sourceFilter === "All Sources" || app.source.toLowerCase() === sourceFilter.toLowerCase();
+    return matchesSearch && matchesStatus && matchesSource});
+    const SortedApplications = [...filteredApplications].sort((a, b) => {
+      if (sortBy === "Newest") {
+        return new Date(b.date) - new Date(a.date);
+      } else if (sortBy === "Oldest") {
+        return new Date(a.date) - new Date(b.date);
+      }
+  });
   const itemperPage = 5; // Number of applications per page
-  const startIndex = (currentPage - 1) * itemperPage;
-  const endIndex = startIndex + itemperPage;
-  const currentApplications = applications.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(applications.length / itemperPage);
+  const startIndex = (currentPage - 1) * itemperPage; //10
+  const endIndex = startIndex + itemperPage; //15 
+  const currentApplications = SortedApplications.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(SortedApplications.length / itemperPage);//4.1 => 5
+  
+  useEffect(() => {
+  setCurrentPage(1);
+}, [searchTerm, statusFilter, sourceFilter]);
+    
   return (
     <div className="all-apps-page">
       {/* Header */}
@@ -29,24 +51,25 @@ const AllApplications = () => {
       <div className="filter-bar">
         <div className="search-box">
           <span>🔍</span>
-          <input type="text" placeholder="Search by company or role..." />
+          <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="text" placeholder="Search by company or role..." />
         </div>
 
-        <select>
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option>All Status</option>
           <option>Applied</option>
           <option>In Interview</option>
+          <option>Offer</option>
           <option>Rejected</option>
         </select>
 
-        <select>
+        <select value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)}>
           <option>All Sources</option>
           <option>LinkedIn</option>
           <option>Indeed</option>
           <option>Company Website</option>
         </select>
 
-        <select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option>Sort by: Newest</option>
           <option>Sort by: Oldest</option>
         </select>
@@ -104,8 +127,8 @@ const AllApplications = () => {
         {/* Footer / Pagination */}
         <div className="table-footer">
           <span>
-  Showing {startIndex + 1} to {Math.min(endIndex, applications.length)} of {applications.length} applications
-</span>
+            Showing {startIndex + 1} to {Math.min(endIndex, SortedApplications.length)} of {SortedApplications.length} applications
+          </span>
           <div className="pagination">
             <button
               className="page-btn"
