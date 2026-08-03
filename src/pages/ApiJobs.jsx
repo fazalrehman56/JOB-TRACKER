@@ -1,39 +1,57 @@
 import  { useState, useEffect } from "react";
-
+import Loading from "./Loading";
+import suitcase from "../icons/suitcase.png";;
 const ApiJobs = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshed, setRefreshed] = useState(1);
+  const [itemperPage, setItemPerPage] = useState(6);
   useEffect(() => {
     const fetchData = async () => {
       try{
-        const reponse = await fetch("https://api.joinrise.io/api/v1/jobs/public?page=1&limit=500&sort=asc&sortedBy=createdAt&includeDescription=true&isTrending=true");
+        const reponse = await fetch(`https://api.joinrise.io/api/v1/jobs/public?page=${refreshed}&limit=500&sort=asc&sortedBy=createdAt&includeDescription=true&isTrending=true`);
         const jsonData = await reponse.json();
         setData(jsonData.result.jobs);
         console.log("Fetched API data:", jsonData.result.jobs);
       } catch (error) {
         console.error("Error fetching API data:", error);
       }
+      finally{
+        setLoading(false);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [refreshed]);
   const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [rating, setRating] = useState("All Categories");
     const [locationFilter, setLocationFilter] = useState("All Locations");
+    const[sort ,setSort] = useState("Newest");
+
     const filteredData = data.filter((job)=>{
       const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) || job.owner.companyName.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesRating = rating==="All Categories" || job.owner.rating === rating;
+      const matchesRating = rating === "All Categories" || String(job.owner.rating) === String(rating);
      const matchesLocation = locationFilter==="All Locations" || job.locationAddress.toLowerCase().includes(locationFilter.toLowerCase());
       return matchesSearch && matchesRating && matchesLocation;
     });
-    const itemsPerPage = 9;
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex+itemsPerPage;
-    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-    const paginatedData = filteredData.slice(startIndex, endIndex);
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (sort === "Newest") {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      else{
+       return new Date(a.createdAt) - new Date(b.createdAt);
+      }
+    });
+    
+    
+    const startIndex = (currentPage - 1) * itemperPage;
+    const endIndex = startIndex+itemperPage;
+    const totalPages = Math.ceil(sortedData.length / itemperPage);
+    const paginatedData = sortedData.slice(startIndex, endIndex);
     useEffect(() => {
       setCurrentPage(1);
-    }, [searchTerm, rating, locationFilter]);
+    }, [searchTerm, rating, locationFilter, sort]);
     
   return (
     <div className="api-jobs-page">
@@ -62,33 +80,36 @@ const ApiJobs = () => {
          
         </select>
 
-        <button className="btn-refresh">↻ Refresh Jobs</button>
+        <button onClick={() => setRefreshed((prev) => prev + 1)} className="btn-refresh">↻ Refresh Jobs</button>
       </div>
 
       {/* Result count + sort */}
       <div className="jobs-meta">
-        <span>Showing jobs</span>
+        <span>Jobs Per Page:</span>
         <div className="sort-by">
           <span>Sort by:</span>
-          <select>
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
             <option>Newest</option>
-            <option>Salary: High to Low</option>
-            <option>Salary: Low to High</option>
+            <option>Oldest</option>
           </select>
         </div>
       </div>
 
       {/* Job cards grid */}
-      <div className="jobs-grid">
-        {paginatedData.map((job) => (
-          <div className="job-card" key={job._id}>
-            <div className="job-card-header">
-              <img
-                src={job.owner.photo}
-                alt={job.owner.companyName}
-                className="job-logo"
-                onError={(e) => { e.target.src = "/avatar.jpg"; }}
-              />
+      {loading ? (<Loading/>) : (
+        <div className="jobs-grid">
+          {paginatedData.map((job) => (
+            <div className="job-card" key={job._id}>
+              <div className="job-card-header">
+                <img
+  src={job.owner.photo || "/avatar.jpg"}
+  alt={job.owner.companyName}
+  className="job-logo"
+  onError={(e) => {
+    e.target.onerror = null; // isse loop rukta hai — dobara onError trigger nahi hoga
+    e.target.src = suitcase;
+  }}
+/> 
               <div>
                 <h3>{job.title}</h3>
                 <p className="job-company">{job.owner.companyName}</p>
@@ -124,7 +145,7 @@ const ApiJobs = () => {
           </div>
         ))}
       </div>
-
+         )}
       {/* Pagination + per-page selector */}
       <div className="jobs-footer">
         <div className="pagination">
@@ -153,11 +174,11 @@ const ApiJobs = () => {
 
         <div className="per-page">
           <span>Show</span>
-          <select>
-            <option>6 per page</option>
-            <option>12 per page</option>
-            <option>24 per page</option>
-          </select>
+          <select value={itemperPage} onChange={(e) => setItemPerPage(Number(e.target.value))}>
+  <option value={6}>6 per page</option>
+  <option value={12}>12 per page</option>
+  <option value={24}>24 per page</option>
+</select>
         </div>
       </div>
     </div>
