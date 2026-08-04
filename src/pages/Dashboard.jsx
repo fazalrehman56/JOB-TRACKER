@@ -119,7 +119,9 @@ const Dashboard = () => {
 
       <div className="interviews-card">
         <h3>Upcoming Interviews</h3>
-        {/* upcomingInterviews.map(...) */}
+        <div>
+          going to change
+        </div>
       </div>
     </div>
   );
