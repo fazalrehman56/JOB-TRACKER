@@ -90,16 +90,31 @@ const Dashboard = () => {
 
       <div className="dashboard-grid">
         <div className="chart-card">
-          <h3>Applications by Status</h3>
-          <PieChart width={250} height={250}>
-            <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90}>
-              {chartData.map((entry, index) => (
-                <Cell key={index} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </div>
+  <h3>Applications by Status</h3>
+  <div className="chart-content">
+    <PieChart width={200} height={200}>
+      <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90}>
+        {chartData.map((entry, index) => (
+          <Cell key={index} fill={entry.color} />
+        ))}
+      </Pie>
+      <Tooltip />
+    </PieChart>
+
+    <div className="chart-legend">
+      {chartData.map((entry, index) => {
+        const percent = totalApplications > 0 ? Math.round((entry.value / totalApplications) * 100) : 0;
+        return (
+          <div key={index} className="legend-item">
+            <span className="legend-dot" style={{ backgroundColor: entry.color }}></span>
+            <span className="legend-label">{entry.name}</span>
+            <span className="legend-count">{entry.value} ({percent}%)</span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
 
         <div className="recent-card">
           <h3>Recent Applications</h3>
