@@ -2586,3 +2586,69 @@ tbody tr:hover {
     font-size: 13px;
   }
 }
+/* =========================================================
+   DASHBOARD STAT CARDS - RESPONSIVE FIX
+   ========================================================= */
+
+/* Desktop */
+.stat-cards,
+.dashboard-stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+
+/* Laptop / Tablet */
+@media (max-width: 1200px) {
+  .stat-cards,
+  .dashboard-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px;
+  }
+
+  .stat-card {
+    width: 100%;
+    min-width: 0;
+    padding: 18px;
+  }
+
+  .stat-card h3 {
+    font-size: 28px;
+  }
+}
+
+
+/* Smaller tablet */
+@media (max-width: 768px) {
+  .stat-cards,
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+
+  .stat-card {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .stat-card h3 {
+    font-size: 25px;
+  }
+}
+
+
+/* Mobile */
+@media (max-width: 480px) {
+  .stat-cards,
+  .dashboard-stats {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .stat-card {
+    width: 100%;
+    padding: 18px;
+  }
+}
