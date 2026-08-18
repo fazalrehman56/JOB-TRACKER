@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-const Header = ({ title, onMenuClick }) => {
+const Header = ({ title, onMenuClick,onReset }) => {
   return (
     <header className="app-header">
       <div className="header-left">
@@ -10,8 +10,12 @@ const Header = ({ title, onMenuClick }) => {
         </button>
         <h1 className="header-title">{title}</h1>
       </div>
+      
 
       <div className="header-right">
+        <button className="btn-reset" onClick={onReset}>
+  Reset
+</button>
         <div className="notification-bell">
           🔔
           <span className="notification-badge">2</span>

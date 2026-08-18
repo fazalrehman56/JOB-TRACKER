@@ -35,7 +35,12 @@ const Dashboard = () => {
   const recentApplications = [...applications].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
 
   // Piece 4: upcoming interviews yahan
-  const upcomingInterviews = applications.filter((app) => app.status === "Interview");
+  const upcomingInterviews = applications
+  .filter((app) => app.status.toLowerCase() === "interview")
+  .sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 2);
+  console.log("All applications:", applications);
+console.log("Filtered interviews:", upcomingInterviews);
+
 
   return (
     <div className="dashboard-page">
@@ -90,31 +95,16 @@ const Dashboard = () => {
 
       <div className="dashboard-grid">
         <div className="chart-card">
-  <h3>Applications by Status</h3>
-  <div className="chart-content">
-    <PieChart width={200} height={200}>
-      <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90}>
-        {chartData.map((entry, index) => (
-          <Cell key={index} fill={entry.color} />
-        ))}
-      </Pie>
-      <Tooltip />
-    </PieChart>
-
-    <div className="chart-legend">
-      {chartData.map((entry, index) => {
-        const percent = totalApplications > 0 ? Math.round((entry.value / totalApplications) * 100) : 0;
-        return (
-          <div key={index} className="legend-item">
-            <span className="legend-dot" style={{ backgroundColor: entry.color }}></span>
-            <span className="legend-label">{entry.name}</span>
-            <span className="legend-count">{entry.value} ({percent}%)</span>
-          </div>
-        );
-      })}
-    </div>
-  </div>
-</div>
+          <h3>Applications by Status</h3>
+          <PieChart width={250} height={250}>
+            <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90}>
+              {chartData.map((entry, index) => (
+                <Cell key={index} fill={entry.color} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </div>
 
         <div className="recent-card">
           <h3>Recent Applications</h3>
@@ -132,10 +122,33 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="interviews-card">
-        <h3>Upcoming Interviews</h3>
-        
-      </div>
+     <div className="interviews-card">
+  <h3>Upcoming Interviews</h3>
+  {upcomingInterviews.length === 0 ? (
+    <p className="empty-message">No upcoming interviews.</p>
+  ) : (
+    <div className="interviews-list">
+      {upcomingInterviews.map((app) => {
+        const interviewDate = new Date(app.date);
+        const month = interviewDate.toLocaleString("default", { month: "short" }).toUpperCase();
+        const day = interviewDate.getDate();
+
+        return (
+          <div key={app.id} className="interview-item">
+            <div className="interview-date-box">
+              <span className="interview-month">{month}</span>
+              <span className="interview-day">{day}</span>
+            </div>
+            <div className="interview-item-info">
+              <h4>{app.companyName}</h4>
+              <p>{app.role}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  )}
+</div>
     </div>
   );
 };

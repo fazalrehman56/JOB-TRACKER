@@ -1132,7 +1132,7 @@ tbody tr:hover {
 
 .interview-item {
   display: flex;
-  justify-content: space-between;
+  width: 38%;
   align-items: center;
   padding: 14px;
   background-color: #f8fafc;
@@ -1277,4 +1277,176 @@ tbody tr:hover {
   flex-direction: column;
   align-items: center;
   gap: 12px;
+}
+.interview-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  margin-bottom: 10px;
+}
+
+.interview-date-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background-color: #ede4fb;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.interview-month {
+  font-size: 10px;
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+.interview-day {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.interview-item-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 2px;
+}
+
+.interview-item-info p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+.interviews-list {
+  display: flex;
+  flex-direction: row;   
+  justify-content: space-between;
+  
+  
+}
+.btn-reset {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #dc2626;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-reset:hover {
+  background-color: #fee2e2;
+  border-color: #fca5a5;
+}
+/* ============================================
+   RESPONSIVE STYLES — TABLET (max-width: 768px)
+   ============================================ */
+@media (max-width: 768px) {
+
+  /* Dashboard */
+  .stat-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* All Applications */
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    flex-basis: 100%;
+  }
+
+  .table-card {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 700px;
+  }
+
+  /* Add Application */
+  .add-app-card {
+    flex-direction: column;
+  }
+
+  .illustration-panel {
+    padding: 24px;
+  }
+
+  /* API Jobs */
+  .jobs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .jobs-filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .jobs-filter-bar select,
+  .jobs-filter-bar .search-box {
+    flex-basis: 100%;
+  }
+}
+
+/* ============================================
+   RESPONSIVE STYLES — MOBILE (max-width: 480px)
+   ============================================ */
+@media (max-width: 480px) {
+
+  /* Dashboard */
+  .stat-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-page {
+    padding: 16px;
+  }
+
+  /* All Applications */
+  .all-apps-page {
+    padding: 16px;
+  }
+
+  .all-apps-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Add Application */
+  .add-app-page {
+    padding: 16px;
+  }
+
+  .add-app-form {
+    padding: 20px;
+  }
+
+  /* API Jobs */
+  .jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .api-jobs-page {
+    padding: 16px;
+  }
+
+  .jobs-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
